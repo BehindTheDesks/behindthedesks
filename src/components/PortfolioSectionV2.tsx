@@ -11,6 +11,8 @@ import ProjectCardV2 from "./ProjectCardV2";
 import mabketImage from "../assets/images/mabket.png";
 import foundImage from "../assets/images/found.png";
 import vipvendorImage from "../assets/images/vipvendor.png";
+import dopeAfricaImage from "../assets/images/dope-africa.png";
+
 
 // --- Placeholder Data (Replace with your actual data or fetch from a source) ---
 const portfolioItemsV2: PortfolioItemV2[] = [
@@ -35,6 +37,15 @@ const portfolioItemsV2: PortfolioItemV2[] = [
     title: "VipVendor",
     imageUrl: vipvendorImage,
     projectUrl: "https://vipvendor.ng/",
+    category: "Web Application",
+    theme: "dark",
+  },
+
+   {
+    id: "proj4",
+    title: "Dope Africa",
+    imageUrl: dopeAfricaImage,
+    projectUrl: "https://dope.foundafrica.tech/",
     category: "Web Application",
     theme: "dark",
   },
