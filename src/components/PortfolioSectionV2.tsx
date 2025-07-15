@@ -12,10 +12,21 @@ import mabketImage from "../assets/images/mabket.png";
 import foundImage from "../assets/images/found.png";
 import vipvendorImage from "../assets/images/vipvendor.png";
 import dopeAfricaImage from "../assets/images/dope-africa.png";
+import aynaDataSolutionImage from "../assets/images/ayna.png";
+
 
 
 // --- Placeholder Data (Replace with your actual data or fetch from a source) ---
 const portfolioItemsV2: PortfolioItemV2[] = [
+
+     {
+    id: "proj5",
+    title: "AYNA Data Solutions",
+    imageUrl: aynaDataSolutionImage,
+    projectUrl: "https://www.aynadatasolutions.com/",
+    category: "Web Application",
+    theme: "dark",
+  },
   {
     id: "proj1",
     title: "Mabket",
@@ -49,6 +60,8 @@ const portfolioItemsV2: PortfolioItemV2[] = [
     category: "Web Application",
     theme: "dark",
   },
+
+
 ];
 
 function PortfolioSectionV2() {
