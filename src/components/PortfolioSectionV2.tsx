@@ -177,7 +177,7 @@ function PortfolioSectionV2() {
             {categories.map((category) => (
               <button
                 key={category}
-                onClick={() => handleFilterChange(category)}
+                onClick={() => handleFilterChange(category!)}
                 className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-medium text-sm sm:text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-lime-green focus:ring-offset-2 ${
                   activeFilter === category
                     ? "bg-brand-lime-green text-brand-dark-text shadow-md transform scale-105"
