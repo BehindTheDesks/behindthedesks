@@ -1,11 +1,8 @@
 // src/components/PortfolioSectionV2.tsx
-import React, { useRef } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import { AnimatedWrapper } from "./AnimatedWrapper"; // Assuming this is in ./AnimatedWrapper.tsx
 import { fadeInUp, staggerContainer } from "./animations/variants"; // Your animation variants
-import {
-  FiChevronLeft,
-  FiChevronRight,
-} from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import type { PortfolioItemV2 } from "./ProjectCardV2";
 import ProjectCardV2 from "./ProjectCardV2";
 import mabketImage from "../assets/images/mabket.png";
@@ -13,19 +10,61 @@ import foundImage from "../assets/images/found.png";
 import vipvendorImage from "../assets/images/vipvendor.png";
 import dopeAfricaImage from "../assets/images/dope-africa.png";
 import aynaDataSolutionImage from "../assets/images/ayna.png";
-
-
+import quartered from "../assets/images/quartered.png";
+import thekrownfixer from "../assets/images/thekrownfixer.png";
+import som from "../assets/images/som.png";
+import crestidge from "../assets/images/crestidge.png";
 
 // --- Placeholder Data (Replace with your actual data or fetch from a source) ---
 const portfolioItemsV2: PortfolioItemV2[] = [
+  {
+    id: "proj9",
+    title: "Cretidge",
+    imageUrl: crestidge,
+    projectUrl: "https://crestridgedevelopment.co/",
+    category: "Web Application",
+    theme: "dark",
+    niche:"Portfolio",
+  },
+  {
+    id: "proj8",
+    title: "S.O.M Commodities",
+    imageUrl: som,
+    projectUrl: "https://somcommodities.com/",
+    category: "Web Application",
+    theme: "dark",
+    niche:"Portfolio",
 
-     {
+  },
+  {
+    id: "proj7",
+    title: "Thekrownfixer",
+    imageUrl: thekrownfixer,
+    projectUrl: "https://thekrownfixer.com/",
+    category: "Web Application",
+    theme: "dark",
+    niche:"Portfolio",
+
+  },
+  {
+    id: "proj6",
+    title: "Quartered",
+    imageUrl: quartered,
+    projectUrl: "https://quartered.co/",
+    category: "Web Application",
+    theme: "dark",
+    niche:"Portfolio",
+
+  },
+  {
     id: "proj5",
     title: "AYNA Data Solutions",
     imageUrl: aynaDataSolutionImage,
     projectUrl: "https://www.aynadatasolutions.com/",
     category: "Web Application",
     theme: "dark",
+    niche:"Portfolio",
+
   },
   {
     id: "proj1",
@@ -34,6 +73,9 @@ const portfolioItemsV2: PortfolioItemV2[] = [
     projectUrl: "https://www.mabket.com/",
     category: "Web Platform",
     theme: "dark",
+    niche:"E-commerce",
+
+
   },
   {
     id: "proj2",
@@ -42,6 +84,8 @@ const portfolioItemsV2: PortfolioItemV2[] = [
     projectUrl: "https://www.foundng.com/",
     category: "Mobile App",
     theme: "dark",
+    niche:"Portfolio",
+
   },
   {
     id: "proj3",
@@ -50,22 +94,39 @@ const portfolioItemsV2: PortfolioItemV2[] = [
     projectUrl: "https://vipvendor.ng/",
     category: "Web Application",
     theme: "dark",
-  },
+    niche:"E-commerce",
 
-   {
+  },
+  {
     id: "proj4",
     title: "Dope Africa",
     imageUrl: dopeAfricaImage,
     projectUrl: "https://dope.foundafrica.tech/",
     category: "Web Application",
     theme: "dark",
+    niche:"Portfolio"
   },
-
-
 ];
 
 function PortfolioSectionV2() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [activeFilter, setActiveFilter] = useState<string>("All");
+
+  // Get unique categories from portfolio items
+  const categories = useMemo(() => {
+    const uniqueCategories = Array.from(
+      new Set(portfolioItemsV2.map(item => item.niche))
+    );
+    return ["All", ...uniqueCategories];
+  }, []);
+
+  // Filter items based on active filter
+  const filteredItems = useMemo(() => {
+    if (activeFilter === "All") {
+      return portfolioItemsV2;
+    }
+    return portfolioItemsV2.filter(item => item.niche === activeFilter);
+  }, [activeFilter]);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
@@ -75,6 +136,17 @@ function PortfolioSectionV2() {
       const scrollAmount = cardWidth * 1.5; // Scroll by approx 1.5 cards
       scrollContainerRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const handleFilterChange = (category: string) => {
+    setActiveFilter(category);
+    // Reset scroll position when filter changes
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        left: 0,
         behavior: "smooth",
       });
     }
@@ -96,75 +168,111 @@ function PortfolioSectionV2() {
                 Explore more of our best projects.
               </p>
             </div>
-            {/* <motion.button
-              whileHover={{ scale: 1.05, y: -2, boxShadow: "0px 5px 15px rgba(175,255,0,0.4)"}}
-              whileTap={{ scale: 0.95 }}
-              className="bg-brand-lime-green text-brand-dark-text font-semibold py-2.5 px-6 sm:py-3 sm:px-8 rounded-button-pill shadow-md hover:shadow-lg transition-all duration-300 text-sm sm:text-base flex items-center whitespace-nowrap"
-            >
-              View more <FiArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-            </motion.button> */}
+          </div>
+        </AnimatedWrapper>
+
+        {/* Category Filter Tabs */}
+        <AnimatedWrapper variants={fadeInUp(0.8)} className="mb-8">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => handleFilterChange(category)}
+                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-medium text-sm sm:text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-lime-green focus:ring-offset-2 ${
+                  activeFilter === category
+                    ? "bg-brand-lime-green text-brand-dark-text shadow-md transform scale-105"
+                    : "bg-white text-brand-subtle-text hover:bg-gray-50 hover:text-brand-dark-text shadow-sm hover:shadow-md"
+                }`}
+              >
+                {category}
+                <span className="ml-2 text-xs opacity-70">
+                  ({category === "All" ? portfolioItemsV2.length : portfolioItemsV2.filter(item => item.niche === category).length})
+                </span>
+              </button>
+            ))}
+          </div>
+        </AnimatedWrapper>
+
+        {/* Results Counter */}
+        <AnimatedWrapper variants={fadeInUp(0.9)} className="mb-6">
+          <div className="text-center">
+            <p className="text-brand-subtle-text text-sm sm:text-base">
+              Showing {filteredItems.length} {filteredItems.length === 1 ? 'project' : 'projects'}
+              {activeFilter !== "All" && (
+                <span className="ml-1">
+                  in <span className="font-semibold text-brand-dark-text">{activeFilter}</span>
+                </span>
+              )}
+            </p>
           </div>
         </AnimatedWrapper>
 
         {/* Horizontal Scroll Container / Carousel */}
         <div className="relative group">
-          {" "}
-          {/* Group for showing nav buttons on hover */}
           {/* Left Scroll Button */}
-          <button
-            onClick={() => scroll("left")}
-            aria-label="Scroll left"
-            className="absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 bg-white/80 hover:bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 focus:opacity-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-lime-green"
-          >
-            <FiChevronLeft size={24} className="text-brand-dark-text" />
-          </button>
-          <AnimatedWrapper // Animates the entry of the entire carousel
-            variants={staggerContainer(0.1, 0.1)} // Stagger the cards slightly as they load
+          {filteredItems.length > 0 && (
+            <button
+              onClick={() => scroll("left")}
+              aria-label="Scroll left"
+              className="absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 bg-white/80 hover:bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 focus:opacity-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-lime-green"
+            >
+              <FiChevronLeft size={24} className="text-brand-dark-text" />
+            </button>
+          )}
+
+          <AnimatedWrapper
+            variants={staggerContainer(0.1, 0.1)}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.05 }} // Trigger when a bit of carousel is visible
+            viewport={{ once: true, amount: 0.05 }}
+            key={activeFilter} // Re-trigger animation when filter changes
           >
-            <div
-              ref={scrollContainerRef}
-              className="flex  pb-8 pt-2 space-x-5 sm:space-x-6 md:space-x-8 scrollbar-hide snap-x snap-mandatory"
-              // Add custom scrollbar styling via CSS if scrollbar-hide is not available
-              // style={{ scrollSnapType: 'x mandatory' }} // For CSS scroll snapping
-              style={{
-                overflowX: "auto",
-                scrollbarWidth: "none", // Firefox
-                msOverflowStyle: "none", // IE 10+
-              }}
-            >
-              {portfolioItemsV2.map((item) => (
-                <div
-                  key={item.id}
-                  className="snap-center first:pl-1 last:pr-1 sm:first:pl-0 sm:last:pr-0"
-                >
-                  {" "}
-                  {/* Snap alignment */}
-                  <ProjectCardV2 item={item} />
+            {filteredItems.length > 0 ? (
+              <div
+                ref={scrollContainerRef}
+                className="flex pb-8 pt-2 space-x-5 sm:space-x-6 md:space-x-8 scrollbar-hide snap-x snap-mandatory"
+                style={{
+                  overflowX: "auto",
+                  scrollbarWidth: "none", // Firefox
+                  msOverflowStyle: "none", // IE 10+
+                }}
+              >
+                {filteredItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="snap-center first:pl-1 last:pr-1 sm:first:pl-0 sm:last:pr-0"
+                  >
+                    <ProjectCardV2 item={item} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center py-16">
+                <div className="text-center">
+                  <p className="text-brand-subtle-text text-lg mb-2">
+                    No projects found in this category
+                  </p>
+                  <button
+                    onClick={() => handleFilterChange("All")}
+                    className="text-brand-lime-green hover:underline font-medium"
+                  >
+                    View all projects
+                  </button>
                 </div>
-              ))}
-              {/* Optional: Add a "View All" card at the end */}
-              {/* <motion.div
-                 variants={fadeInUp(0.6)} // Ensure this variant is defined
-                 className="flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] aspect-[3/4] flex items-center justify-center bg-brand-light-gray rounded-card shadow-card-portfolio p-6 snap-center group"
-               >
-                 <button className="text-brand-dark-text hover:text-primary font-semibold text-lg flex flex-col items-center transition-colors">
-                   <FiSearch size={40} className="mb-3 opacity-70 group-hover:opacity-100"/>
-                   View All Projects
-                 </button>
-               </motion.div> */}
-            </div>
+              </div>
+            )}
           </AnimatedWrapper>
+
           {/* Right Scroll Button */}
-          <button
-            onClick={() => scroll("right")}
-            aria-label="Scroll right"
-            className="absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 bg-white/80 hover:bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 focus:opacity-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-accent"
-          >
-            <FiChevronRight size={24} className="text-brand-dark-text" />
-          </button>
+          {filteredItems.length > 0 && (
+            <button
+              onClick={() => scroll("right")}
+              aria-label="Scroll right"
+              className="absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 bg-white/80 hover:bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 focus:opacity-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-accent"
+            >
+              <FiChevronRight size={24} className="text-brand-dark-text" />
+            </button>
+          )}
         </div>
       </div>
     </section>

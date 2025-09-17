@@ -10,6 +10,7 @@ export interface PortfolioItemV2 {
   projectUrl?: string; // Link to the live project or case study
   category?: string; // Optional
   theme?: 'light' | 'dark'; // To simulate device theme for the card background
+  niche?: "E-commerce" | "Portfolio";
 }
 
 interface ProjectCardV2Props {
